@@ -3,10 +3,17 @@ const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validate-fields');
 const router = Router();
 
-const { createProfile } = require('../controllers/profile');
+const {
+  createProfile,
+  getProfiles,
+  updateProfile,
+  deleteProfile,
+} = require('../controllers/profile');
+
+router.get('/', getProfiles);
 
 router.post(
-  '/new',
+  '/',
   [
     check('name', 'You must provide a name').not().isEmpty(),
     check('phone', 'You must provide a phone number').not().isEmpty(),
@@ -15,5 +22,9 @@ router.post(
   ],
   createProfile
 );
+
+router.put('/:id', updateProfile);
+
+router.delete('/:id', deleteProfile);
 
 module.exports = router;

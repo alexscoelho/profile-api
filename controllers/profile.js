@@ -31,6 +31,30 @@ const createProfile = async (req, res = response) => {
   }
 };
 
+const getProfiles = async (req, res = response) => {
+  const profiles = await Profile.find();
+
+  res.json({
+    ok: true,
+    profiles,
+  });
+};
+const updateProfile = (req, res = response) => {
+  res.json({
+    ok: true,
+    msg: 'updateProfile',
+  });
+};
+const deleteProfile = (req, res = response) => {
+  res.json({
+    ok: true,
+    msg: 'deleteProfile',
+  });
+};
+
 module.exports = {
+  getProfiles,
   createProfile,
+  updateProfile,
+  deleteProfile,
 };
