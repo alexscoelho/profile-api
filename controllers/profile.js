@@ -32,7 +32,7 @@ const createProfile = async (req, res = response) => {
 };
 
 const getProfiles = async (req, res = response) => {
-  const profiles = await Profile.find().populate('providers', '_id');
+  const profiles = await Profile.find().populate('providers', '_id, name');
 
   res.json({
     ok: true,
