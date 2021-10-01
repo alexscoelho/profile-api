@@ -4,6 +4,10 @@ app.component('form-modal', {
       type: Array,
       required: true,
     },
+    showModal: {
+      type: Boolean,
+      required: true,
+    },
   },
   template:
     /*html*/
@@ -18,45 +22,64 @@ app.component('form-modal', {
                 </slot>
               </div>
               <div class="modal-body">
-                <form>
+                <form @submit.prevent="onSubmit">
+
                   <label for="fname">Name</label>
-                  <input type="text" id="fname" name="firstname">
+                  <input type="text" id="fname" v-model="name" name="firstname">
 
                   <label for="email">Email</label>
-                  <input type="email" id="email" name="email">
+                  <input type="email" id="email" v-model="email" name="email">
 
                   <label for="phone">Phone</label>
-                  <input type="text" id="phone" name="phone">
+                  <input type="text" id="phone" v-model="phone" name="phone">
 
-                  
-                  <label for="providers">Providers</label>
-                  <input type="text" id="providers" name="providers">
-
-                    <div class="checkbox-list-box">
-                      <div  v-for="provider in providers" :key="provider.id">
-                        <input type="checkbox" id="provider.name" name="provider.name" value="provider.name">
-                        <label for="provider.name"> {{provider.name}}</label><br>
-                      </div>
-                    </div>
-                    
-                  
-                  
-
-                  <input type="button" value="Add Provider">
-
-                 
-
+                  <div class="modal-footer">
+                    <slot name="footer">
+                      <input type="button" value="Cancel">
+                      <input type="submit" value="Add Client">
+                    </slot>
+                  </div>
                 </form>
-              </div>
-              <div class="modal-footer">
-                <slot name="footer">
-                  <input type="button" value="Cancel">
-                  <input type="submit" value="Add Client">
-                </slot>
               </div>
             </div>
           </div>
         </div>
       </transition>
       `,
+  data() {
+    return {
+      name: '',
+      email: '',
+      phone: '',
+    };
+  },
+  methods: {
+    async createProfile(profile) {
+      try {
+        const response = await fetch('/api/profile', {
+          method: 'POST',
+          body: JSON.stringify(profile),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const newProfile = await response.json();
+        console.log(newProfile);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    onSubmit() {
+      if (this.name === '' || this.email === '' || this.phone === '') {
+        alert('Please fill out every field');
+        return;
+      }
+      const newProfile = {
+        name: this.name,
+        email: this.email,
+        phone: this.phone,
+      };
+      this.createProfile(newProfile);
+    },
+  },
 });

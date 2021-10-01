@@ -3,7 +3,7 @@ const app = Vue.createApp({
     return {
       profiles: [],
       providers: [],
-      showModal: true,
+      showModal: false,
     };
   },
   methods: {

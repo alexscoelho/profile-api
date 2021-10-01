@@ -1,4 +1,10 @@
 app.component('navbar', {
+  props: {
+    showModal: {
+      type: Boolean,
+      required: true,
+    },
+  },
   template:
     /*html*/
     `
